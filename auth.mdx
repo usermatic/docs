@@ -1,0 +1,40 @@
+---
+name: Configuration
+route: /
+---
+
+import { Props } from 'docz'
+import { AuthProvider } from '@usermatic/client'
+
+# Configuration
+
+
+## `<AuthProvider>`
+
+The `<AuthProvider>` component connects your application to Usermatic.
+Any part of your application that uses Usermatic must be enclosed in an `<AuthProvider>` component.
+In Next.js, the easiest way to do this is with a custom app class, like:
+
+<Props of={AuthProvider} />
+
+```tsx
+import App from 'next/app'
+import { AuthProvider } from '@usermatic/client'
+
+export default class extends App {
+  render() {
+    const {props} = this as any
+    const {Component, pageProps} = props
+
+    return <>
+      <AuthProvider appId="xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx">
+        <Component {...pageProps} />
+      </AuthProvider>
+    </>
+  }
+}
+```
+
+## `useCredentials()`
+
+The React hook `useCredentials()` provides you with the current 
