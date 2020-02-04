@@ -1,21 +1,21 @@
 ---
 name: Configuration
-route: /
+route: /auth
 ---
 
-import { Props } from 'docz'
-import { AuthProvider } from '@usermatic/client'
-
-# Configuration
-
+# Configuration and Setup
 
 ## `<AuthProvider>`
+
+Props:
+
+    * `appId` (required): The UUID of the Usermatic application.
+    * `showDiagnostics` (optional, default true): Whether to add Usermatic
+       diagnostic messages to the application page.
 
 The `<AuthProvider>` component connects your application to Usermatic.
 Any part of your application that uses Usermatic must be enclosed in an `<AuthProvider>` component.
 In Next.js, the easiest way to do this is with a custom app class, like:
-
-<Props of={AuthProvider} />
 
 ```tsx
 import App from 'next/app'
@@ -35,6 +35,30 @@ export default class extends App {
 }
 ```
 
+# Credentials
+
 ## `useCredentials()`
 
-The React hook `useCredentials()` provides you with the current 
+The React hook `useCredentials()` allows you to detect whether a user is logged in.
+If a user is logged in, it also provides you with a JWT that you can pass to your backend.
+
+Returns an object with the following properties:
+
+    * loading (boolean): If true, the enclosing `<AuthProvider>` component has not finished loading the current credentials from the Usermatic API server.
+    * id (string): The UUID identifying the logged-in user. If no user is logged in, undefined.
+    * userJwt (string): A JWT signed with your application's secret key. Pass to your application backend to authenticate the user.
+
+# Profile
+
+## `useProfile()`
+
+The React hook `useProfile()` queries the Usermatic API for the logged-in user's profile information.
+
+It returns an object with the following properties.
+
+    * loading (boolean): If true, the query result is not yet available.
+    * profile (object): If `loading` is true, `profile` will be undefined.
+        - id: (UUID): The user's ID.
+        - email: (string): The user's email address.
+        - emailIsVerified: (boolean): True if the email address has been verified.
+
